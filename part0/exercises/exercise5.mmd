@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: User writes note and clicks Save button
+    Note right of browser: Browser executes event handler<br/>that prevents default form submit
+    Note right of browser: Browser creates new note,<br/>adds it to notes list, and<br/>redraws notes on the page
+    
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note left of server: Server creates new note object
+    server-->>browser: Response: {"message":"note created"}
+    deactivate server
+    
+    Note right of browser: Browser console logs success message.<br/>Page stays on screen without reload.
