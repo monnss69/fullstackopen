@@ -15,11 +15,20 @@ const CountryDetail = ({ country, weather }) => {
         </ul>
 
         <img src={country.flags.png} alt={country.name.common} style={{width: '100px'}}/>
-
+        
         <h2>Weather in {country.capital[0]}</h2>
-        <div>Temperature: {(weather.main.temp - 273.15).toFixed(1)} Celcius</div>
-        <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description}/>
-        <div>Wind: {weather.wind.speed} m/s</div>
+        {weather ? (
+          <div>
+            <div>Temperature: {(weather.main.temp - 273.15).toFixed(1)} Celcius</div>
+            <img 
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+              alt={weather.weather[0].description}
+            />
+            <div>Wind: {weather.wind.speed} m/s</div>
+          </div>
+        ) : (
+          <div>Loading weather data...</div>
+        )}
     </div>
   )
 }

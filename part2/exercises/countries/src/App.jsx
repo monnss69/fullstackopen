@@ -5,16 +5,21 @@ import countryServices from './services/countryServices'
 
 function App() {
   const [countries, setCountries] = useState([])
-  const [weather, setWeather] = useState([])
+  const [weather, setWeather] = useState(null)
   const [search, setSearch] = useState('')
 
   useEffect(() => {
     countryServices
       .getCountry(search)
       .then(countries => setCountries(countries))
-  }, [countries])
+  }, [search])
 
   useEffect(() => {
+    if (countries.length !== 1) {
+      setWeather(null)
+      return
+    }
+    
     if (countries.length === 1) {
       countryServices
         .getCapitalWeather(countries[0])
