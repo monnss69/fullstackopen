@@ -3,12 +3,7 @@ const baseUrl = '/api/notes'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
-    const nonExisting = {
-      id: 10000,
-      content: 'This note is not saved to server',
-      important: true,
-    }
-    return request.then(response => response.data.concat(nonExisting))
+    return request.then(response => response.data)
   }
 
 const create = newObject => {
@@ -21,4 +16,14 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update }
+const deleteNote = (id) => {
+  const confirmed = window.confirm(`Delete note with id ${id}?`)
+  if(!confirmed) {
+    return Promise.reject("Delete cancelled")
+  } else {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response.data)
+  }
+}
+
+export default { getAll, create, update, deleteNote }

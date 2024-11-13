@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
-import axios from 'axios'
 import noteService from './services/notes'
 import Notification from './components/Notification'
 
@@ -22,22 +21,12 @@ const App = (props) => {
   ? notes
   : notes.filter(note => note.important === true)
 
-  const toggleImportanceOf = id => {
+  const handleDelete = (id) => {
     const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
   
     noteService
-      .update(id, changedNote)
-      .then(returnedNote => {
-        setNotes(notes.map(note => note.id === id ? returnedNote : note))
-      })
-      .catch(error => {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
+      .deleteNote(id)
+      .then(response => {
         setNotes(notes.filter(n => n.id !== id))
       })
   }
@@ -74,7 +63,7 @@ const App = (props) => {
       </div>
       <ul>
         {notesToShow.map(note => 
-          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
+          <Note key={note.id} note={note} handleDelete={() => handleDelete(note.id)} />
         )}
       </ul>
       <form onSubmit={addNote}>
